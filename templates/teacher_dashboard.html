@@ -1,0 +1,39 @@
+<h1>Teacher Dashboard</h1>
+
+{% if status_row %}
+    <p><b>Current Status:</b> {{ status_row["status"] }}</p>
+    <p><b>Current Location:</b> {{ status_row["location"] }}</p>
+{% else %}
+    <p><b>No status set yet.</b></p>
+{% endif %}
+
+<hr>
+
+<h2>Update Your Status</h2>
+
+<form method="POST" action="/update_status">
+    <label>Status:</label><br>
+    <select name="status">
+        <option value="Available">Available</option>
+        <option value="Busy">Busy</option>
+        <option value="Do Not Disturb">Do Not Disturb</option>
+    </select>
+
+    <br><br>
+
+    <label>Current Location:</label><br>
+    <select name="location">
+        <option value="Cabin">Cabin</option>
+        <option value="Lecture Hall">Lecture Hall</option>
+        <option value="Meeting Room">Meeting Room</option>
+        <option value="Lab">Lab</option>
+    </select>
+
+    <br><br>
+
+    <button type="submit">Update Status</button>
+</form>
+
+<hr>
+
+<a href="/logout">Logout</a>
