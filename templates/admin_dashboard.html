@@ -1,18 +1,24 @@
 <h1>Admin Dashboard</h1>
 
 <h2>Add Teacher</h2>
-
 <form method="POST" action="/add_teacher">
-    <label>Name:</label><br>
-    <input type="text" name="name" required><br><br>
-
-    <label>Email:</label><br>
-    <input type="email" name="email" required><br><br>
-
-    <label>Password:</label><br>
-    <input type="text" name="password" required><br><br>
-
+    <input type="text" name="name" placeholder="Name" required><br><br>
+    <input type="email" name="email" placeholder="Email" required><br><br>
+    <input type="text" name="password" placeholder="Password" required><br><br>
     <button type="submit">Add Teacher</button>
+</form>
+
+<hr>
+
+<h2>Add Location (Room / Lab / Office)</h2>
+<form method="POST" action="/add_location">
+    <input type="text" name="name" placeholder="Location Name (e.g. DBMS Lab)" required><br><br>
+    <input type="text" name="building" placeholder="Building (e.g. IT Block)" required><br><br>
+    <input type="text" name="floor" placeholder="Floor (e.g. 2)" required><br><br>
+    <input type="text" name="room_number" placeholder="Room No (e.g. 201)" required><br><br>
+    <input type="number" name="x" placeholder="X coordinate" required><br><br>
+    <input type="number" name="y" placeholder="Y coordinate" required><br><br>
+    <button type="submit">Add Location</button>
 </form>
 
 <hr>

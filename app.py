@@ -36,6 +36,18 @@ def init_db():
         location TEXT
     )
     """)
+    # locations table
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS locations (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        building TEXT,
+        floor TEXT,
+        room_number TEXT,
+        x INTEGER,
+        y INTEGER
+    )
+    """)
 
     # Create default admin if not exists
     c.execute("SELECT * FROM users WHERE role='admin'")
@@ -68,7 +80,7 @@ def chat():
 
         conn = get_db_connection()
 
-        # Get all teachers
+        # ------------------ 1. CHECK TEACHER QUERIES ------------------
         teachers = conn.execute(
             "SELECT * FROM users WHERE role='teacher'"
         ).fetchall()
@@ -79,9 +91,7 @@ def chat():
                 found_teacher = t
                 break
 
-        if not found_teacher:
-            bot_reply = "I could not find that teacher. Please check the name."
-        else:
+        if found_teacher:
             status_row = conn.execute(
                 "SELECT * FROM teacher_status WHERE user_id=?",
                 (found_teacher["id"],)
@@ -97,11 +107,30 @@ def chat():
                 else:
                     bot_reply = f"{found_teacher['name']} is {status_row['status']} and is in {status_row['location']}."
 
+        else:
+            # ------------------ 2. CHECK LOCATION QUERIES ------------------
+            locations = conn.execute(
+                "SELECT * FROM locations"
+            ).fetchall()
+
+            found_location = None
+            for loc in locations:
+                if loc["name"].lower() in msg_lower:
+                    found_location = loc
+                    break
+
+            if found_location:
+                bot_reply = (
+                    f"{found_location['name']} is in {found_location['building']}, "
+                    f"Floor {found_location['floor']}, Room {found_location['room_number']}."
+                )
+            else:
+                bot_reply = "Sorry, I could not understand your question. Please ask about a teacher or a room."
+
         conn.close()
 
         messages.append({"role": "Bot", "text": bot_reply})
 
-    # 🔴 THIS RETURN MUST ALWAYS EXECUTE
     return render_template("chat.html", messages=messages)
 
 @app.route("/login", methods=["GET", "POST"])
@@ -213,6 +242,29 @@ def update_status():
     conn.close()
 
     return redirect("/teacher")
+
+
+@app.route("/add_location", methods=["POST"])
+def add_location():
+    if "role" not in session or session["role"] != "admin":
+        return redirect("/login")
+
+    name = request.form["name"]
+    building = request.form["building"]
+    floor = request.form["floor"]
+    room_number = request.form["room_number"]
+    x = request.form["x"]
+    y = request.form["y"]
+
+    conn = get_db_connection()
+    conn.execute(
+        "INSERT INTO locations (name, building, floor, room_number, x, y) VALUES (?, ?, ?, ?, ?, ?)",
+        (name, building, floor, room_number, x, y)
+    )
+    conn.commit()
+    conn.close()
+
+    return redirect("/admin")
 
 
 if __name__ == "__main__":
