@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 import sqlite3
+from flask import jsonify
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
@@ -68,14 +69,11 @@ init_db()
 def home():
     return render_template("index.html")
 
+
 @app.route("/chat", methods=["GET", "POST"])
 def chat():
-    messages = []
-
     if request.method == "POST":
-        user_msg = request.form["user_message"]
-        messages.append({"role": "User", "text": user_msg})
-
+        user_msg = request.json["message"]
         msg_lower = user_msg.lower()
 
         conn = get_db_connection()
@@ -129,9 +127,9 @@ def chat():
 
         conn.close()
 
-        messages.append({"role": "Bot", "text": bot_reply})
+        return jsonify({"response": bot_reply})
 
-    return render_template("chat.html", messages=messages)
+    return render_template("chat.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
