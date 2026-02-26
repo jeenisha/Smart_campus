@@ -1,22 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login - Smart Campus</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h2>Login</h2>
 
-    <form method="POST">
-        <label>Email:</label><br>
-        <input type="email" name="email" required><br><br>
+<div class="container">
+    <div class="header">
+        <h1>Login Portal</h1>
+    </div>
 
-        <label>Password:</label><br>
-        <input type="password" name="password" required><br><br>
+    <div class="card">
+        <form method="POST">
+            <label>Email</label>
+            <input type="email" name="email" required>
 
-        <button type="submit">Login</button>
-    </form>
+            <label>Password</label>
+            <input type="password" name="password" required>
 
-    <br>
-    <a href="/">⬅ Back to Home</a>
+            <button class="btn" type="submit">Login</button>
+        </form>
+    </div>
+</div>
+
 </body>
 </html>

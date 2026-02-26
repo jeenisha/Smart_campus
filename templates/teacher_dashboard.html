@@ -1,39 +1,48 @@
-<h1>Teacher Dashboard</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teacher Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
 
-{% if status_row %}
-    <p><b>Current Status:</b> {{ status_row["status"] }}</p>
-    <p><b>Current Location:</b> {{ status_row["location"] }}</p>
-{% else %}
-    <p><b>No status set yet.</b></p>
-{% endif %}
+<div class="container">
 
-<hr>
+    <div class="header">
+        <h1>Teacher Dashboard</h1>
+    </div>
 
-<h2>Update Your Status</h2>
+    <div class="card">
+        <h2>Current Status</h2>
+        <p><strong>Status:</strong> {{ status_row.status if status_row else "Not Set" }}</p>
+        <p><strong>Location:</strong> {{ status_row.location if status_row else "Not Set" }}</p>
+    </div>
 
-<form method="POST" action="/update_status">
-    <label>Status:</label><br>
-    <select name="status">
-        <option value="Available">Available</option>
-        <option value="Busy">Busy</option>
-        <option value="Do Not Disturb">Do Not Disturb</option>
-    </select>
+    <div class="card">
+        <h2>Update Your Status</h2>
 
-    <br><br>
+        <form method="POST" action="/update_status">
+            <label>Status</label>
+            <select name="status">
+                <option>Available</option>
+                <option>Busy</option>
+                <option>In Class</option>
+            </select>
 
-    <label>Current Location:</label><br>
-    <select name="location">
-        <option value="Cabin">Cabin</option>
-        <option value="Lecture Hall">Lecture Hall</option>
-        <option value="Meeting Room">Meeting Room</option>
-        <option value="Lab">Lab</option>
-    </select>
+            <label>Location</label>
+            <select name="location">
+                <option>Cabin</option>
+                <option>Lecture Hall</option>
+                <option>Lab</option>
+            </select>
 
-    <br><br>
+            <button class="btn" type="submit">Update Status</button>
+        </form>
+    </div>
 
-    <button type="submit">Update Status</button>
-</form>
+    <a href="/logout" class="btn btn-danger">Logout</a>
 
-<hr>
+</div>
 
-<a href="/logout">Logout</a>
+</body>
+</html>

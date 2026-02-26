@@ -70,15 +70,28 @@ def home():
     return render_template("index.html")
 
 
+
+
 @app.route("/chat", methods=["GET", "POST"])
 def chat():
+
+    # Initialize chat history if not exists
+    if "chat_history" not in session:
+        session["chat_history"] = []
+
     if request.method == "POST":
         user_msg = request.json["message"]
         msg_lower = user_msg.lower()
 
+        # Save user message
+        session["chat_history"].append({
+            "role": "user",
+            "text": user_msg
+        })
+
         conn = get_db_connection()
 
-        # ------------------ 1. CHECK TEACHER QUERIES ------------------
+        # ------------------ TEACHER CHECK ------------------
         teachers = conn.execute(
             "SELECT * FROM users WHERE role='teacher'"
         ).fetchall()
@@ -104,9 +117,8 @@ def chat():
                     bot_reply = f"{found_teacher['name']} is currently {status_row['status']}."
                 else:
                     bot_reply = f"{found_teacher['name']} is {status_row['status']} and is in {status_row['location']}."
-
         else:
-            # ------------------ 2. CHECK LOCATION QUERIES ------------------
+            # ------------------ LOCATION CHECK ------------------
             locations = conn.execute(
                 "SELECT * FROM locations"
             ).fetchall()
@@ -127,9 +139,23 @@ def chat():
 
         conn.close()
 
+        # Save bot reply
+        session["chat_history"].append({
+            "role": "bot",
+            "text": bot_reply
+        })
+
+        session.modified = True  # IMPORTANT
+
         return jsonify({"response": bot_reply})
 
+    # On GET request, return page
     return render_template("chat.html")
+
+@app.route("/clear_chat")
+def clear_chat():
+    session.pop("chat_history", None)
+    return redirect("/chat")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

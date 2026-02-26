@@ -2,19 +2,23 @@
 <html>
 <head>
     <title>Smart Campus Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Smart Campus Assistant Chatbot</h1>
-    <p>Choose how you want to continue:</p>
 
-    <a href="/chat">
-        <button>🎓 Student / Visitor (Use Chatbot)</button>
-    </a>
+<div class="container">
+    <div class="header">
+        <h1>Smart Campus Assistant</h1>
+    </div>
 
-    <br><br>
+    <div class="card">
+        <h2>Welcome 👋</h2>
+        <p>Choose how you want to continue:</p>
 
-    <a href="/login">
-        <button>👩‍🏫 Teacher / Admin Login</button>
-    </a>
+        <a href="/chat" class="nav-btn">🎓 Student / Visitor (Use Chatbot)</a>
+        <a href="/login" class="nav-btn">👩‍🏫 Teacher / Admin Login</a>
+    </div>
+</div>
+
 </body>
 </html>

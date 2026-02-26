@@ -10,13 +10,24 @@
 
     <div class="chat-header">
         Smart Campus Assistant
+        <a href="/clear_chat" style="color:white; float:right;">Clear Chat</a>
     </div>
 
     <div class="chat-messages" id="chat-messages">
+
+    {% if session.chat_history %}
+        {% for msg in session.chat_history %}
+            <div class="message {{ msg.role }}">
+                {{ msg.text }}
+            </div>
+        {% endfor %}
+    {% else %}
         <div class="message bot">
             Hello! Ask me about a teacher or a room.
         </div>
-    </div>
+    {% endif %}
+
+</div>
 
     <div class="chat-input">
         <input type="text" id="user-input" placeholder="Type your message..." />
