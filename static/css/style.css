@@ -13,7 +13,7 @@ h1, h2 {
 .container {
     width: 100%;
     max-width: 1400px;
-    margin: 0 auto;
+    margin: auto;
     padding:40px
 }
 
@@ -38,6 +38,10 @@ h1, h2 {
     background:linear-gradient(90deg,#2563eb,#7c3aed);
     color:white;
     border-radius:12px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
 /* ===== Buttons ===== */
@@ -314,10 +318,18 @@ background:#dc2626;
 
 .admin-grid{
 display:grid;
-grid-template-columns: 2fr 1fr;
+grid-template-columns: 1fr 1fr;
 gap:30px;
 padding:40px;
 /*width:100%;*/
+align-items:start;
+}
+
+.admin-left,
+.admin-right{
+display:flex;
+flex-direction:column;
+gap:20px;
 }
 
 .admin-card{
@@ -332,10 +344,14 @@ width = 100%;
 .admin-card h2{
 margin-bottom:15px;
 }
-
+.admin-card form{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
 .admin-card input{
 width:100%;
-padding:10px;
+padding:8px;
 margin-bottom:10px;
 border:1px solid #ccc;
 border-radius:6px;
@@ -357,11 +373,12 @@ background:#1d4ed8;
 table{
 width:100%;
 border-collapse:collapse;
+margin-top:15px;
 }
 
 th, td{
 padding:10px;
-border-bottom:1px solid #ddd;
+border-bottom:1px solid #eee;
 text-align:left;
 }
 
@@ -381,15 +398,4 @@ border-radius:5px;
 text-decoration:none;
 }
 
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:15px;
-}
-
-th, td{
-padding:12px;
-border-bottom:1px solid #eee;
-text-align:left;
-}
 

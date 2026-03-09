@@ -10,6 +10,7 @@
 
     <div class="header">
         <h1>Admin Dashboard</h1>
+        <a href="/logout" class="btn btn-danger">Logout</a>
     </div>
 
 <div class="admin-grid">
@@ -65,43 +66,64 @@
 
 
     <!-- RIGHT SIDE -->
-    <div class="admin-right">
+<div class="admin-right">
 
-        <div class="admin-card">
-            <h2>Add Location</h2>
+    <div class="admin-card">
+        <h2>Add Location</h2>
 
-            <form action="/add_location" method="POST">
+        <form action="/add_location" method="POST">
 
-                <label>Location Name</label>
-                <input type="text" name="name">
+            <label>Location Name</label>
+            <input type="text" name="name">
 
-                <label>Building</label>
-                <input type="text" name="building">
+            <label>Building</label>
+            <input type="text" name="building">
 
-                <label>Floor</label>
-                <input type="text" name="floor">
+            <label>Floor</label>
+            <input type="text" name="floor">
 
-                <label>Room Number</label>
-                <input type="text" name="room_number">
+            <label>Room Number</label>
+            <input type="text" name="room_number">
 
+            <button type="submit">Add Location</button>
 
-                <button type="submit">Add Location</button>
-
-            </form>
-
-        </div>
-
+        </form>
     </div>
 
+
+    <div class="admin-card">
+        <h2>Location Database</h2>
+
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Building</th>
+                <th>Floor</th>
+                <th>Room</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for loc in locations %}
+            <tr>
+                <td>{{ loc.id }}</td>
+                <td>{{ loc.name }}</td>
+                <td>{{ loc.building }}</td>
+                <td>{{ loc.floor }}</td>
+                <td>{{ loc.room_number }}</td>
+                <td>
+                    <a href="/edit_location/{{ loc.id }}" class="edit-btn">Edit</a>
+                    <a href="/delete_location/{{ loc.id }}" class="delete-btn">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </table>
+    </div>
+
+</div>
     
 
-
-
-</div>
-
-    <a href="/logout" class="btn btn-danger">Logout</a>
-
-</div>
 
 </body>
 </html>

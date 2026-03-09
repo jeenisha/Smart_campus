@@ -215,9 +215,16 @@ def admin_dashboard():
         "SELECT * FROM users WHERE role='teacher'"
     ).fetchall()
 
+    locations = conn.execute(
+        "SELECT * FROM locations"
+    ).fetchall()
+
     conn.close()
 
-    return render_template("admin_dashboard.html", teachers=teachers)
+    return render_template(
+        "admin_dashboard.html",
+        teachers=teachers,
+        locations=locations)
 
 
     return render_template("admin_dashboard.html")
