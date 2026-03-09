@@ -34,7 +34,8 @@ def init_db():
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         user_id INTEGER,
         status TEXT,
-        location TEXT
+        location TEXT,
+        message TEXT
     )
     """)
     # locations table
@@ -44,9 +45,7 @@ def init_db():
         name TEXT,
         building TEXT,
         floor TEXT,
-        room_number TEXT,
-        x INTEGER,
-        y INTEGER
+        room_number TEXT
     )
     """)
 
@@ -62,7 +61,17 @@ def init_db():
 
 # Run DB init
 init_db()
+conn = sqlite3.connect("database.db")
+cursor = conn.cursor()
 
+try:
+    cursor.execute("ALTER TABLE teacher_status ADD COLUMN message TEXT")
+    print("Message column added successfully")
+except:
+    print("Message column already exists")
+
+conn.commit()
+conn.close()
 # ---------- Routes ----------
 
 @app.route("/")
@@ -111,8 +120,20 @@ def chat():
             if not status_row:
                 bot_reply = f"{found_teacher['name']} has not updated their status yet."
             else:
-                if "where" in msg_lower:
-                    bot_reply = f"{found_teacher['name']} is currently in {status_row['location']}."
+                # MESSAGE / NOTE / UPDATE / ANNOUNCEMENT
+                if any(word in msg_lower for word in ["message", "note", "update", "announcement"]):
+                    if status_row["message"]:
+                        bot_reply = f"{found_teacher['name']}'s message: {status_row['message']}"
+                    else:
+                        bot_reply = f"{found_teacher['name']} has not left any message."
+
+                elif "where" in msg_lower:
+                    message = status_row["message"]
+                    if message:
+                        bot_reply = f"{found_teacher['name']} is {status_row['status']} and is in {status_row['location']}. Message: {message}"
+                    else:
+                        #bot_reply = f"{found_teacher['name']} is {status_row['status']} and is in {status_row['location']}."
+                        bot_reply = f"{found_teacher['name']} is currently in {status_row['location']}."
                 elif "available" in msg_lower or "free" in msg_lower:
                     bot_reply = f"{found_teacher['name']} is currently {status_row['status']}."
                 else:
@@ -187,6 +208,18 @@ def login():
 def admin_dashboard():
     if "role" not in session or session["role"] != "admin":
         return redirect("/login")
+    
+    conn = get_db_connection()
+
+    teachers = conn.execute(
+        "SELECT * FROM users WHERE role='teacher'"
+    ).fetchall()
+
+    conn.close()
+
+    return render_template("admin_dashboard.html", teachers=teachers)
+
+
     return render_template("admin_dashboard.html")
 
 @app.route("/teacher")
@@ -204,6 +237,57 @@ def teacher_dashboard():
     conn.close()
 
     return render_template("teacher_dashboard.html", status_row=status_row)
+
+@app.route("/delete_teacher/<int:id>")
+def delete_teacher(id):
+
+    if "role" not in session or session["role"] != "admin":
+        return redirect("/login")
+
+    conn = get_db_connection()
+
+    conn.execute(
+        "DELETE FROM users WHERE id=?",
+        (id,)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/admin")
+
+@app.route("/edit_teacher/<int:id>", methods=["GET", "POST"])
+def edit_teacher(id):
+
+    if "role" not in session or session["role"] != "admin":
+        return redirect("/login")
+
+    conn = get_db_connection()
+
+    if request.method == "POST":
+
+        name = request.form["name"]
+        email = request.form["email"]
+        password = request.form["password"]
+
+        conn.execute(
+            "UPDATE users SET name=?, email=?, password=? WHERE id=?",
+            (name, email, password, id)
+        )
+
+        conn.commit()
+        conn.close()
+
+        return redirect("/admin")
+
+    teacher = conn.execute(
+        "SELECT * FROM users WHERE id=?",
+        (id,)
+    ).fetchone()
+
+    conn.close()
+
+    return render_template("edit_teacher.html", teacher=teacher)
 
 
 @app.route("/logout")
@@ -242,6 +326,7 @@ def update_status():
     status = request.form["status"]
     location = request.form["location"]
     user_id = session["user_id"]
+    message = request.form["message"]
 
     conn = get_db_connection()
 
@@ -253,14 +338,34 @@ def update_status():
 
     if existing:
         conn.execute(
-            "UPDATE teacher_status SET status=?, location=? WHERE user_id=?",
-            (status, location, user_id)
+            "UPDATE teacher_status SET status=?, location=?, message=? WHERE user_id=?",
+            (status, location, message, user_id)
         )
     else:
         conn.execute(
-            "INSERT INTO teacher_status (user_id, status, location) VALUES (?, ?, ?)",
-            (user_id, status, location)
+            "INSERT INTO teacher_status (user_id, status, location, message) VALUES (?, ?, ?)",
+            (user_id, status, location,message)
         )
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/teacher")
+
+@app.route("/delete_message", methods=["POST"])
+def delete_message():
+
+    if "role" not in session or session["role"] != "teacher":
+        return redirect("/login")
+
+    user_id = session["user_id"]
+
+    conn = get_db_connection()
+
+    conn.execute(
+        "UPDATE teacher_status SET message='' WHERE user_id=?",
+        (user_id,)
+    )
 
     conn.commit()
     conn.close()
@@ -277,13 +382,13 @@ def add_location():
     building = request.form["building"]
     floor = request.form["floor"]
     room_number = request.form["room_number"]
-    x = request.form["x"]
-    y = request.form["y"]
+    #x = request.form["x"]
+   # y = request.form["y"]
 
     conn = get_db_connection()
     conn.execute(
-        "INSERT INTO locations (name, building, floor, room_number, x, y) VALUES (?, ?, ?, ?, ?, ?)",
-        (name, building, floor, room_number, x, y)
+        "INSERT INTO locations (name, building, floor, room_number) VALUES (?, ?, ?, ?)",
+        (name, building, floor, room_number)
     )
     conn.commit()
     conn.close()

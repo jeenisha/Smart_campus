@@ -1,23 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Smart Campus Assistant</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+<title>Smart Campus Assistant</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
-<body>
 
-<div class="container">
-    <div class="header">
-        <h1>Smart Campus Assistant</h1>
+<body class="fullscreen">
+
+<div class="home-container">
+
+    <div class="home-header">
+        Smart Campus Assistant
     </div>
 
-    <div class="card">
-        <h2>Welcome 👋</h2>
-        <p>Choose how you want to continue:</p>
+    <div class="home-options">
 
-        <a href="/chat" class="nav-btn">🎓 Student / Visitor (Use Chatbot)</a>
-        <a href="/login" class="nav-btn">👩‍🏫 Teacher / Admin Login</a>
+        <a href="/chat" class="home-card student">
+            🎓 Student / Visitor  
+            <span>Ask about teachers and rooms</span>
+        </a>
+
+        <a href="/login" class="home-card teacher">
+            👩‍🏫 Teacher / Admin  
+            <span>Login to manage data</span>
+        </a>
+
     </div>
+
 </div>
 
 </body>

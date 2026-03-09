@@ -10,7 +10,7 @@
 
     <div class="chat-header">
         Smart Campus Assistant
-        <a href="/clear_chat" style="color:white; float:right;">Clear Chat</a>
+        <a href="/clear_chat" class="clear-chat" style="color:white; float:right;">Clear Chat</a>
     </div>
 
     <div class="chat-messages" id="chat-messages">
@@ -37,6 +37,17 @@
 </div>
 
 <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+
+<script>
+
+function scrollToBottom() {
+    const chat = document.getElementById("chat-messages");
+    chat.scrollTop = chat.scrollHeight;
+}
+
+window.onload = scrollToBottom;
+
+</script>
 
 </body>
 </html>

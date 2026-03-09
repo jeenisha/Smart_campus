@@ -28,7 +28,8 @@ function appendMessage(text, sender) {
     messageDiv.innerText = text;
 
     chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    //chatMessages.scrollTop = chatMessages.scrollHeight;   
+    scrollToBottom();
 }
 
 document.getElementById("user-input").addEventListener("keypress", function(event) {

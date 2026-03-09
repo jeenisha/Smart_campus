@@ -12,48 +12,92 @@
         <h1>Admin Dashboard</h1>
     </div>
 
-    <div class="card">
-        <h2>Add Teacher</h2>
+<div class="admin-grid">
 
-        <form method="POST" action="/add_teacher">
-            <label>Name</label>
-            <input name="name" required>
+    <!-- LEFT SIDE -->
+    <div class="admin-left">
 
-            <label>Email</label>
-            <input name="email" required>
+        <div class="admin-card">
+            <h2>Add Teacher</h2>
 
-            <label>Password</label>
-            <input type="password" name="password" required>
+            <form action="/add_teacher" method="POST">
+                <label>Name</label>
+                <input type="text" name="name" required>
 
-            <button class="btn">Add Teacher</button>
-        </form>
+                <label>Email</label>
+                <input type="email" name="email" required>
+
+                <label>Password</label>
+                <input type="text" name="password" required>
+
+                <button type="submit">Add Teacher</button>
+            </form>
+        </div>
+
+
+        <div class="admin-card">
+            <h2>Teacher Database</h2>
+
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+
+                {% for teacher in teachers %}
+                <tr>
+                    <td>{{ teacher.id }}</td>
+                    <td>{{ teacher.name }}</td>
+                    <td>{{ teacher.email }}</td>
+                    <td>
+                        <a href="/edit_teacher/{{ teacher.id }}" class="edit-btn">Edit</a>
+                        <a href="/delete_teacher/{{ teacher.id }}" class="delete-btn">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+
     </div>
 
-    <div class="card">
-        <h2>Add Location</h2>
 
-        <form method="POST" action="/add_location">
-            <label>Location Name</label>
-            <input name="name" required>
+    <!-- RIGHT SIDE -->
+    <div class="admin-right">
 
-            <label>Building</label>
-            <input name="building" required>
+        <div class="admin-card">
+            <h2>Add Location</h2>
 
-            <label>Floor</label>
-            <input name="floor" required>
+            <form action="/add_location" method="POST">
 
-            <label>Room Number</label>
-            <input name="room_number" required>
+                <label>Location Name</label>
+                <input type="text" name="name">
 
-            <label>X Coordinate</label>
-            <input name="x" required>
+                <label>Building</label>
+                <input type="text" name="building">
 
-            <label>Y Coordinate</label>
-            <input name="y" required>
+                <label>Floor</label>
+                <input type="text" name="floor">
 
-            <button class="btn">Add Location</button>
-        </form>
+                <label>Room Number</label>
+                <input type="text" name="room_number">
+
+
+                <button type="submit">Add Location</button>
+
+            </form>
+
+        </div>
+
     </div>
+
+    
+
+
+
+</div>
 
     <a href="/logout" class="btn btn-danger">Logout</a>
 
