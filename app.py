@@ -77,10 +77,6 @@ conn.close()
 @app.route("/")
 def home():
     return render_template("index.html")
-
-
-
-
 @app.route("/chat", methods=["GET", "POST"])
 def chat():
 
@@ -350,7 +346,7 @@ def update_status():
         )
     else:
         conn.execute(
-            "INSERT INTO teacher_status (user_id, status, location, message) VALUES (?, ?, ?)",
+            "INSERT INTO teacher_status (user_id, status, location, message) VALUES (?, ?, ?,?)",
             (user_id, status, location,message)
         )
 
