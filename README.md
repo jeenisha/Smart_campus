@@ -1,7 +1,14 @@
-🎓 Smart Campus Assistant
 
-A rule-based campus information system that helps students instantly find teacher availability, messages, and room locations — eliminating unnecessary waiting time.
-# 🎓 Smart Campus Assistant
+## 🎓 Smart Campus Assistant - Chatbot
+
+### Built from a real frustration :
+It was submission week. I walked to my HOD's cabin — she was in a meeting. I couldn't knock, couldn't interrupt, couldn't ask when she'd be free.
+So I just waited. Outside the door. For nearly an hour.
+She was right there — and I had no way to know anything.
+That moment, I wished someone could just answer my question — **"When is she available?"** 😫
+So I built a **chatbot to answer exactly that.**
+**Smart Campus Assistant** answers the questions students ask every day — Is ma'am available? Any message from her? Where is the DBMS Lab? — so no student ever has to stand outside a door, waiting for something they could have just asked a chatbot.
+
 
 > **A rule-based campus information system that helps students instantly find teacher availability, messages, and room locations — eliminating unnecessary waiting time.**
 
@@ -13,7 +20,7 @@ A rule-based campus information system that helps students instantly find teache
 
 **Smart Campus Assistant** is a web-based campus information system built with **Python Flask** and **SQLite**, designed to solve a real and everyday problem faced by students — *not knowing where their teacher is or whether they're available.*
 
-Students often waste valuable time searching for teachers during submission periods, project reviews, viva sessions, and academic consultations. This system digitizes that process: teachers update their status in real time, and students simply ask the chatbot.
+Students often waste valuable time searching for teachers during submission periods, project reviews, viva sessions, and academic consultations. This system digitizes that process: **teachers update their status in real time**, and students simply ask the chatbot.
 
 ---
 
@@ -157,7 +164,7 @@ Smart_campus/
 ## ⚙️ Installation & Setup
 
 ### Prerequisites
-- Python 3.x installed
+- Python 3.9.13 installed
 - pip (Python package manager)
 
 ### Step 1 — Clone the Repository
